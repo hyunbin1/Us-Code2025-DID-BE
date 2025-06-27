@@ -25,6 +25,12 @@ public class MemberDTO {
     private LocalDateTime updatedAt;
     private List<Member.Platform> platform;
     private Member.Role role;
+    private String address; // 판매자 상세 주소
+    private String phoneNumber; // 판매자 휴대번호
+    private String kakaoId; // 판매자 카톡아이디
+    private String snsId; // 판매자 SNS ID
+    private String smartStoreLink; // 스마트 스토어 주소
+    private Member.ContentsTone contentsTone; // 글 작성 톤
 
     /**
      * Member 엔티티를 MemberDTO로 변환하는 메서드 (응답용)
@@ -34,13 +40,19 @@ public class MemberDTO {
                 .uuid(member.getUuid())
                 .name(member.getName())
                 .email(member.getEmail())
-                .gender(String.valueOf(member.getGender()))
+                .gender(String.valueOf(member.getGender ()))
                 .nickname(member.getNickname())
                 .createdAt(member.getCreatedAt())
                 .updatedAt(member.getUpdatedAt())
                 .role(member.getRole())
                 .platform(member.getPlatform())
                 .introStatus(member.getIntroStatus())
+                .address(member.getAddress()) // 판매자 상세 주소
+                .phoneNumber(member.getPhoneNumber()) // 판매자 휴대번호
+                .kakaoId(member.getKakaoId()) // 판매자 카톡아이디
+                .snsId(member.getSnsId()) // 판매자 SNS ID
+                .smartStoreLink(member.getSmartStoreLink()) // 스마트 스토어 주소
+                .contentsTone(member.getContentsTone()) // 글 작성 톤
                 .build();
     }
 
