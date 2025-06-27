@@ -19,8 +19,6 @@ public class MemberDTO {
     private String email;
     private String gender;
     private String nickname;
-    private String department;
-    private Integer studentNumber;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private Member.Role role;
@@ -35,8 +33,6 @@ public class MemberDTO {
                 .email(member.getEmail())
                 .gender(String.valueOf(member.getGender()))
                 .nickname(member.getNickname())
-                .department(member.getDepartment())
-                .studentNumber(member.getStudentNumber())
                 .createdAt(member.getCreatedAt())
                 .updatedAt(member.getUpdatedAt())
                 .role(member.getRole())
@@ -56,8 +52,6 @@ public class MemberDTO {
         private String email;
         private String gender;
         private String nickname;
-        private String department;
-        private Integer studentNumber;
     }
 
     /**

@@ -53,6 +53,13 @@ public class MemberController {
                 .body(ApiResponse.success(newMember));
     }
 
+    @GetMapping("/check-nickname")
+    public ResponseEntity<ApiResponse<Boolean>> checkNicknameDuplicate(
+            @RequestParam("nickname") String nickname) {
+        Boolean isDuplicate = memberService.validNicknameCheck(nickname);
+        return ResponseEntity.ok(ApiResponse.success(isDuplicate));
+    }
+
     // 일반 정보 수정
     @PatchMapping("/info")
     @PreAuthorize("isAuthenticated() and (#userPrincipal.email == principal.username or hasRole('ADMIN'))")

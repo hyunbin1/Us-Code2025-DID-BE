@@ -39,8 +39,6 @@ public class Member extends BaseEntity {
     private Gender gender;
 
     private String nickname;
-    private String department;
-    private Integer studentNumber;
 
     public enum Gender {
         MALE, FEMALE, OTHERS;
@@ -66,8 +64,6 @@ public class Member extends BaseEntity {
                 .password(encodePassword)
                 .gender(Gender.fromString(memberDTO.getGender())) // 대소문자 변환
                 .nickname(memberDTO.getNickname())
-                .department(memberDTO.getDepartment())
-                .studentNumber(memberDTO.getStudentNumber())
                 .role(Role.USER)
                 .build();
     }
@@ -78,8 +74,6 @@ public class Member extends BaseEntity {
         this.name = getOrDefault(memberDTO.getName(), this.name);
         this.email = getOrDefault(memberDTO.getEmail(), this.email);
         this.nickname = getOrDefault(memberDTO.getNickname(), this.nickname);
-        this.department = getOrDefault(memberDTO.getDepartment(), this.department);
-        this.studentNumber = getOrDefault(memberDTO.getStudentNumber(), this.studentNumber);
         this.gender = memberDTO.getGender() != null ? Gender.fromString(memberDTO.getGender()) : this.gender;
     }
 

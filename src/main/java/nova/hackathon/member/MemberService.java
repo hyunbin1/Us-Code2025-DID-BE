@@ -98,6 +98,11 @@ public class MemberService {
         return memberRepository.save(member);
     }
 
+    public Boolean validNicknameCheck(String nickname) {
+        if (nickname == null || nickname.isBlank()) return false;
+        return memberRepository.existsByNickname(nickname);
+    }
+
     // 비밀번호 변경
     @Transactional
     public void updatePassword(String emailId, MemberDTO.PasswordRequestDTO requestDTO) {
