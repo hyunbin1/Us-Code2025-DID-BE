@@ -27,7 +27,6 @@ public class NaverBlogService {
 
         promptBuilder.append("# 주제: 네이버 블로그의 인기 농가 블로그를 작성하고 싶은데, 인기 블로그들의 형식에 따라서 글을 a4 2장 분량으로 작성하고 싶어.\n")
                 .append("# 역할: 의성 농부\n")
-
                 .append("# 이미지: 문맥에 맞는 이미지에 대")
                 .append("# 출력 형식: HTML 형식으로 블로그 글 출력\n");
 
@@ -52,7 +51,7 @@ public class NaverBlogService {
             promptBuilder.append("# 글의 목적: ").append(req.contentsType()).append("\n");
         }
         if (req.contentsType() != null) {
-            promptBuilder.append("# 판매 농작물: ").append(req.contentsType()).append("\n");
+            promptBuilder.append("# 판매 농작물: ").append(req.item()).append("\n");
         }
         if (req.extraPrompt() != null) {
             promptBuilder.append("# 농부가 원하는 컨셉: ").append(req.extraPrompt()).append("\n");

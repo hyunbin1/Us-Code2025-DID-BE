@@ -161,6 +161,11 @@
             "type": "string",
             "description": "프롬프트에 포함될 추가 정보",
             "example": "# 오늘은 벌이 매우 많더라 "
+          },
+          "item": {
+            "type": "string",
+            "description": "판매 농작물 : 토마토 당근 이런거 ",
+            "example": "토마토"
           }
         },
         "required": ["contentsType", "extraPrompt"]
