@@ -19,6 +19,7 @@ public class MemberDTO {
     private String email;
     private String gender;
     private String nickname;
+    private Boolean introStatus;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private Member.Role role;
@@ -36,6 +37,7 @@ public class MemberDTO {
                 .createdAt(member.getCreatedAt())
                 .updatedAt(member.getUpdatedAt())
                 .role(member.getRole())
+                .introStatus(member.getIntroStatus())
                 .build();
     }
 

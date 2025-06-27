@@ -40,6 +40,8 @@ public class Member extends BaseEntity {
 
     private String nickname;
 
+    private Boolean introStatus; // 처음 프로필 설정 여부
+
     public enum Gender {
         MALE, FEMALE, OTHERS;
 
@@ -64,6 +66,7 @@ public class Member extends BaseEntity {
                 .password(encodePassword)
                 .gender(Gender.fromString(memberDTO.getGender())) // 대소문자 변환
                 .nickname(memberDTO.getNickname())
+                .introStatus(Boolean.FALSE)
                 .role(Role.USER)
                 .build();
     }
@@ -75,6 +78,7 @@ public class Member extends BaseEntity {
         this.email = getOrDefault(memberDTO.getEmail(), this.email);
         this.nickname = getOrDefault(memberDTO.getNickname(), this.nickname);
         this.gender = memberDTO.getGender() != null ? Gender.fromString(memberDTO.getGender()) : this.gender;
+        this.introStatus = getOrDefault(memberDTO.getIntroStatus(), this.introStatus);
     }
 
     public void updatePassword(String encodedNewPassword) {

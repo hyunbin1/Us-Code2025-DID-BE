@@ -26,6 +26,7 @@ public class AuthDTO {
     public static class LoginResponseDTO{
         private String accessToken;
         private String refreshToken;
+        private Boolean introStatus;
     }
 
     @Data

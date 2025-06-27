@@ -105,12 +105,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     //JWT를 검증하고 인증 객체를 생성하여 SecurityContext에 저장
     private Authentication authenticate(String token) {
         String email = jwtUtil.getEmailFromToken(token);
-        String role = jwtUtil.getRoleFromToken(token);
-
-        UserPrincipal userPrincipal = new UserPrincipal(email, role);
-
+        UserPrincipal userPrincipal = (UserPrincipal) userDetailsService.loadUserByUsername(email);
         return new UsernamePasswordAuthenticationToken(userPrincipal, null, userPrincipal.getAuthorities());
     }
+
 
     //HTTP 응답으로 에러 메시지를 반환하는 메서드
 //    private void setErrorResponse(HttpServletResponse response, int status, String message) throws IOException {

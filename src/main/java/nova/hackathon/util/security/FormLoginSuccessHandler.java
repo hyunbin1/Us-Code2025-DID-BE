@@ -40,6 +40,7 @@ public class FormLoginSuccessHandler implements AuthenticationSuccessHandler {//
         String email = principal.getEmail(); //SecurityContext에서 username(email) 가져오기
         //String email = authentication.getName(); 이것도 맞을 수 있음. principal에서 getUserName을 email로 반환하기 때문
         String role = principal.getRole();
+        Boolean introStatus = principal.getIntroStatus();
 
 
         //JWT 생성
@@ -53,6 +54,7 @@ public class FormLoginSuccessHandler implements AuthenticationSuccessHandler {//
         AuthDTO.LoginResponseDTO responseData = AuthDTO.LoginResponseDTO.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
+                .introStatus(introStatus)
                 .build();
 
         // 실제 응답이 정상적으로 반환되는지 확인

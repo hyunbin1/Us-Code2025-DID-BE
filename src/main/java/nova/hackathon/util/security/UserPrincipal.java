@@ -20,21 +20,24 @@ public class UserPrincipal implements UserDetails {
     private final String password;
     private final String fullName;
     private final String role;
+    private final Boolean introStatus;
 
-    public UserPrincipal(String email, UUID uuid, String password, String fullName, String role) {
+    public UserPrincipal(String email, UUID uuid, String password, String fullName, String role, Boolean introStatus) {
         this.email = email;
         this.uuid = uuid;
         this.password = password;
         this.fullName = fullName;
         this.role = role;
+        this.introStatus = introStatus;
     }
 
-    public UserPrincipal(String email, String role) {
+    public UserPrincipal(String email, String role, Boolean introStatus) {
         this.email = email;
         this.role = role;
         this.uuid = null;
         this.password = null;
         this.fullName = null;
+        this.introStatus = introStatus;
     }
 
     public static UserPrincipal fromMember(Member member){
@@ -43,7 +46,8 @@ public class UserPrincipal implements UserDetails {
                 member.getUuid(),
                 member.getPassword(),
                 member.getName(),
-                String.valueOf(member.getRole())
+                String.valueOf(member.getRole()),
+                member.getIntroStatus()
         );
     }
 
