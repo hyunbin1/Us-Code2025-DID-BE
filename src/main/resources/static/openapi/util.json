@@ -18,155 +18,50 @@
     {
       "name": "Email",
       "description": "Email 관련 API"
+    },
+    {
+      "name": "Naver Blog",
+      "description": "네이버 블로그 자동화 관련 API"
     }
   ],
   "paths": {
-    "/gemini": {
+    "/naver-blog": {
       "post": {
-        "tags": ["AI-Gemini"],
-        "summary": "Gemini 텍스트 생성",
-        "description": "사용자가 자연어 질문을 전송하면, Google Gemini 모델을 통해 그에 대한 자연어 응답을 생성하여 반환합니다.",
+        "tags": ["Naver Blog"],
+        "summary": "네이버 블로그 자동 작성",
+        "description": "사용자가 입력한 정보를 바탕으로 Gemini API를 통해 네이버 블로그 형식의 글을 생성합니다.",
         "requestBody": {
-          "description": "사용자의 질문",
+          "description": "블로그 생성을 위한 주제 및 추가 정보",
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "question": {
-                    "type": "string",
-                    "description": "Gemini 모델에 전달할 질문 내용",
-                    "example": "정석 수학1 지수함수를 쉽게 설명해줘"
-                  }
-                },
-                "required": ["question"]
+                "$ref": "#/components/schemas/ClientNaverBlogRequestDTO"
               }
             }
           }
         },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "responses": {
           "200": {
-            "description": "Gemini 응답 성공",
+            "description": "블로그 글 작성 성공",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "status": {
-                      "type": "string",
-                      "example": "API 요청 성공"
-                    },
-                    "data": {
-                      "type": "object",
-                      "properties": {
-                        "candidates": {
-                          "type": "array",
-                          "description": "Gemini 응답 후보 리스트",
-                          "items": {
-                            "type": "object",
-                            "properties": {
-                              "content": {
-                                "type": "object",
-                                "properties": {
-                                  "parts": {
-                                    "type": "array",
-                                    "items": {
-                                      "type": "object",
-                                      "properties": {
-                                        "text": {
-                                          "type": "string",
-                                          "description": "Gemini가 생성한 텍스트 응답",
-                                          "example": "지수함수는 y = a^x 형태의 함수입니다..."
-                                        }
-                                      }
-                                    }
-                                  },
-                                  "role": {
-                                    "type": "string",
-                                    "example": "model"
-                                  }
-                                }
-                              },
-                              "finishReason": {
-                                "type": "string",
-                                "example": "STOP"
-                              },
-                              "avgLogprobs": {
-                                "type": "number",
-                                "example": -0.123456
-                              }
-                            }
-                          }
-                        },
-                        "usageMetadata": {
-                          "type": "object",
-                          "properties": {
-                            "promptTokenCount": {
-                              "type": "integer",
-                              "example": 16
-                            },
-                            "candidatesTokenCount": {
-                              "type": "integer",
-                              "example": 1191
-                            },
-                            "totalTokenCount": {
-                              "type": "integer",
-                              "example": 1207
-                            },
-                            "promptTokensDetails": {
-                              "type": "array",
-                              "items": {
-                                "type": "object",
-                                "properties": {
-                                  "modality": {
-                                    "type": "string",
-                                    "example": "TEXT"
-                                  },
-                                  "tokenCount": {
-                                    "type": "integer",
-                                    "example": 16
-                                  }
-                                }
-                              }
-                            },
-                            "candidatesTokensDetails": {
-                              "type": "array",
-                              "items": {
-                                "type": "object",
-                                "properties": {
-                                  "modality": {
-                                    "type": "string",
-                                    "example": "TEXT"
-                                  },
-                                  "tokenCount": {
-                                    "type": "integer",
-                                    "example": 1191
-                                  }
-                                }
-                              }
-                            }
-                          }
-                        },
-                        "modelVersion": {
-                          "type": "string",
-                          "example": "gemini-2.0-flash"
-                        },
-                        "responseId": {
-                          "type": "string",
-                          "example": "MftcaLb4Otm7nvgPz5Sb0Aw"
-                        }
-                      }
-                    },
-                    "timestamp": {
-                      "type": "string",
-                      "format": "date-time",
-                      "example": "2025-06-26T16:48:08.5127483"
-                    }
-                  }
+                  "$ref": "#/components/schemas/GeminiResponse"
                 }
               }
             }
+          },
+          "401": {
+            "description": "인증 실패"
+          },
+          "500": {
+            "description": "서버 오류"
           }
         }
       }
@@ -220,17 +115,14 @@
                   "properties": {
                     "success": {
                       "type": "boolean",
-                      "description": "성공 여부",
                       "example": true
                     },
                     "messageId": {
                       "type": "string",
-                      "description": "메일 메시지 ID",
                       "example": "<2103503259.1.1751025106807@DESKTOP-92GP1I6>"
                     },
                     "error": {
                       "type": "string",
-                      "description": "전송 실패 시 오류 메시지",
                       "example": null
                     }
                   }
@@ -243,6 +135,48 @@
           },
           "500": {
             "description": "메일 전송 중 서버 오류 발생"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "ClientNaverBlogRequestDTO": {
+        "type": "object",
+        "properties": {
+          "contentsType": {
+            "type": "string",
+            "description": "글의 목적 - 일상생활, 상품 홍보 등 ",
+            "example": "의성마늘 판매 후기"
+          },
+          "extraPrompt": {
+            "type": "string",
+            "description": "프롬프트에 포함될 추가 정보",
+            "example": "# 오늘은 벌이 매우 많더라 "
+          }
+        },
+        "required": ["contentsType", "extraPrompt"]
+      },
+      "GeminiResponse": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "생성된 블로그 제목",
+            "example": "의성마늘, 이렇게 맛있을 수가?"
+          },
+          "content": {
+            "type": "string",
+            "description": "생성된 블로그 본문 내용",
+            "example": "경북 의성에서 직접 재배한 마늘로 만든 이야기입니다..."
           }
         }
       }

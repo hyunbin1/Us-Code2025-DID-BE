@@ -33,8 +33,6 @@ public class Member extends BaseEntity {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(nullable = false, unique = true)
-    private String contactEmail;
 
     @Column(nullable = false)
     private String password;
@@ -46,6 +44,7 @@ public class Member extends BaseEntity {
 
     private Boolean introStatus; // 처음 프로필 설정 여부
 
+    private String contactEmail; // 컨텍용 이매일
     private String address; // 판매자 상세 주소
     private String phoneNumber; // 판매자 휴대번호
     private String kakaoId; // 판매자 카톡아이디
@@ -86,8 +85,19 @@ public class Member extends BaseEntity {
         }
     }
 
+    @Getter
     public enum ContentsTone {
-        SNS_CASUAL, FRIENDLY, LIVELY, CALM_EXPLANATORY;
+        SNS_CASUAL("SNS 캐주얼 톤"),
+        FRIENDLY("정겨운 톤"),
+        LIVELY("발랄한 톤"),
+        CALM_EXPLANATORY("차분한 설명 톤");
+
+        private final String description;
+
+        ContentsTone(String description) {
+            this.description = description;
+        }
+
         public static ContentsTone fromString(String value) {
             try {
                 return ContentsTone.valueOf(value.toUpperCase());
@@ -96,6 +106,7 @@ public class Member extends BaseEntity {
             }
         }
     }
+
 
     public enum Role {
         USER, ADMIN, DEVELOPER
@@ -127,7 +138,7 @@ public class Member extends BaseEntity {
         this.address        = getOrDefault(memberDTO.getAddress(),        this.address);
         this.kakaoId        = getOrDefault(memberDTO.getKakaoId(),        this.kakaoId);
         this.phoneNumber    = getOrDefault(memberDTO.getPhoneNumber(),    this.phoneNumber);
-        this.storeName    = getOrDefault(memberDTO.getPhoneNumber(),    this.storeName);
+        this.storeName    = getOrDefault(memberDTO.getStoreName(),    this.storeName);
         this.snsId          = getOrDefault(memberDTO.getSnsId(),          this.snsId);
         this.smartStoreLink = getOrDefault(memberDTO.getSmartStoreLink(), this.smartStoreLink);
 
