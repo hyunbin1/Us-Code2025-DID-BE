@@ -51,8 +51,6 @@ public class MemberService {
     // 회원 가입
     @Transactional
     public AuthDTO.LoginResponseDTO registerMember(MemberDTO.MemberRequestDTO requestDTO) {
-        validateEmail(requestDTO.getEmail());
-
         if (requestDTO.getNickname() == null) {
             throw new NicknameIsInvalidException();
         }
@@ -139,11 +137,5 @@ public class MemberService {
         log.info("회원 삭제 - emailId: {}", emailId);
     }
 
-    // 이메일 수동 검증 메서드 추가
-    private void validateEmail(String email) {
-        if (email == null || !email.matches("^[a-zA-Z0-9._%+-]+@mju\\.ac\\.kr$")) {
-            throw new EmailIsInvalidException();
-        }
-    }
 }
 
