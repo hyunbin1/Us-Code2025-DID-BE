@@ -18,6 +18,7 @@ public class MemberDTO {
     private UUID uuid;
     private String name;
     private String email;
+    private String contactEmail;
     private String gender;
     private String nickname;
     private Boolean introStatus;
@@ -40,6 +41,7 @@ public class MemberDTO {
                 .uuid(member.getUuid())
                 .name(member.getName())
                 .email(member.getEmail())
+                .email(member.getContactEmail())
                 .gender(String.valueOf(member.getGender ()))
                 .nickname(member.getNickname())
                 .createdAt(member.getCreatedAt())

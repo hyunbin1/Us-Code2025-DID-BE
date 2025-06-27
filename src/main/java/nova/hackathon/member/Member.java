@@ -33,6 +33,9 @@ public class Member extends BaseEntity {
     @Column(nullable = false, unique = true)
     private String email;
 
+    @Column(nullable = false, unique = true)
+    private String contactEmail;
+
     @Column(nullable = false)
     private String password;
 
@@ -115,6 +118,7 @@ public class Member extends BaseEntity {
         // ── 단순 필드
         this.name           = getOrDefault(memberDTO.getName(),           this.name);
         this.email          = getOrDefault(memberDTO.getEmail(),          this.email);
+        this.contactEmail   = getOrDefault(memberDTO.getEmail(),         this.contactEmail);
         this.nickname       = getOrDefault(memberDTO.getNickname(),       this.nickname);
         this.introStatus    = getOrDefault(memberDTO.getIntroStatus(),    this.introStatus);
         this.address        = getOrDefault(memberDTO.getAddress(),        this.address);
