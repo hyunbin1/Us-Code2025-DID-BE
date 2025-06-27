@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import nova.hackathon.util.entity.BaseEntity;
 
+import java.util.List;
 import java.util.UUID;
 
 // Entity
@@ -42,6 +43,12 @@ public class Member extends BaseEntity {
 
     private Boolean introStatus; // 처음 프로필 설정 여부
 
+    @ElementCollection(targetClass = Platform.class, fetch = FetchType.EAGER)
+    @Enumerated(EnumType.STRING)
+    @CollectionTable(name = "member_platform", joinColumns = @JoinColumn(name = "member_id"))
+    @Column(name = "platform", nullable = false)
+    private List<Platform> platform;
+
     public enum Gender {
         MALE, FEMALE, OTHERS;
 
@@ -50,6 +57,18 @@ public class Member extends BaseEntity {
                 return Gender.valueOf(value.toUpperCase());
             } catch (IllegalArgumentException | NullPointerException e) {
                 throw new IllegalArgumentException("Invalid gender value: " + value);
+            }
+        }
+    }
+
+    public enum Platform {
+        NAVER_BLOG, INSTAGRAM, NAVER_STORE, CARROT;
+
+        public static Platform fromString(String value) {
+            try {
+                return Platform.valueOf(value.toUpperCase());
+            } catch (IllegalArgumentException | NullPointerException e) {
+                throw new IllegalArgumentException("Invalid Platform value: " + value);
             }
         }
     }
@@ -78,6 +97,10 @@ public class Member extends BaseEntity {
         this.email = getOrDefault(memberDTO.getEmail(), this.email);
         this.nickname = getOrDefault(memberDTO.getNickname(), this.nickname);
         this.gender = memberDTO.getGender() != null ? Gender.fromString(memberDTO.getGender()) : this.gender;
+        if (memberDTO.getPlatform() != null) {
+            this.platform.clear();              // 기존 값 제거
+            this.platform.addAll(memberDTO.getPlatform()); // 새 값 추가
+        }
         this.introStatus = getOrDefault(memberDTO.getIntroStatus(), this.introStatus);
     }
 

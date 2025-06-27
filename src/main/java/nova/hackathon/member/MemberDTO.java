@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -22,6 +23,7 @@ public class MemberDTO {
     private Boolean introStatus;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private List<Member.Platform> platform;
     private Member.Role role;
 
     /**
@@ -37,6 +39,7 @@ public class MemberDTO {
                 .createdAt(member.getCreatedAt())
                 .updatedAt(member.getUpdatedAt())
                 .role(member.getRole())
+                .platform(member.getPlatform())
                 .introStatus(member.getIntroStatus())
                 .build();
     }
