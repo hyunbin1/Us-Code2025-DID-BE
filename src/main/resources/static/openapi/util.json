@@ -1,0 +1,171 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "AI Gemini API",
+    "version": "v1.0.0",
+    "description": "Gemini 기반 텍스트 생성 기능을 제공하는 AI API입니다. 사용자가 질문을 입력하면, Google Gemini 모델을 통해 자연어로 답변을 생성합니다."
+  },
+  "servers": [
+    {
+      "url": "http://mjsearch.org:8080/api/v1"
+    }
+  ],
+  "tags": [
+    {
+      "name": "AI-Gemini",
+      "description": "Google Gemini 기반 텍스트 생성 API"
+    }
+  ],
+  "paths": {
+    "/gemini": {
+      "post": {
+        "tags": ["AI-Gemini"],
+        "summary": "Gemini 텍스트 생성",
+        "description": "사용자가 자연어 질문을 전송하면, Google Gemini 모델을 통해 그에 대한 자연어 응답을 생성하여 반환합니다.",
+        "requestBody": {
+          "description": "사용자의 질문",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "question": {
+                    "type": "string",
+                    "description": "Gemini 모델에 전달할 질문 내용",
+                    "example": "정석 수학1 지수함수를 쉽게 설명해줘"
+                  }
+                },
+                "required": ["question"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Gemini 응답 성공",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "API 요청 성공"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "candidates": {
+                          "type": "array",
+                          "description": "Gemini 응답 후보 리스트",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "content": {
+                                "type": "object",
+                                "properties": {
+                                  "parts": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "object",
+                                      "properties": {
+                                        "text": {
+                                          "type": "string",
+                                          "description": "Gemini가 생성한 텍스트 응답",
+                                          "example": "지수함수는 y = a^x 형태의 함수입니다..."
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "role": {
+                                    "type": "string",
+                                    "example": "model"
+                                  }
+                                }
+                              },
+                              "finishReason": {
+                                "type": "string",
+                                "example": "STOP"
+                              },
+                              "avgLogprobs": {
+                                "type": "number",
+                                "example": -0.123456
+                              }
+                            }
+                          }
+                        },
+                        "usageMetadata": {
+                          "type": "object",
+                          "properties": {
+                            "promptTokenCount": {
+                              "type": "integer",
+                              "example": 16
+                            },
+                            "candidatesTokenCount": {
+                              "type": "integer",
+                              "example": 1191
+                            },
+                            "totalTokenCount": {
+                              "type": "integer",
+                              "example": 1207
+                            },
+                            "promptTokensDetails": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "modality": {
+                                    "type": "string",
+                                    "example": "TEXT"
+                                  },
+                                  "tokenCount": {
+                                    "type": "integer",
+                                    "example": 16
+                                  }
+                                }
+                              }
+                            },
+                            "candidatesTokensDetails": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "modality": {
+                                    "type": "string",
+                                    "example": "TEXT"
+                                  },
+                                  "tokenCount": {
+                                    "type": "integer",
+                                    "example": 1191
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "modelVersion": {
+                          "type": "string",
+                          "example": "gemini-2.0-flash"
+                        },
+                        "responseId": {
+                          "type": "string",
+                          "example": "MftcaLb4Otm7nvgPz5Sb0Aw"
+                        }
+                      }
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2025-06-26T16:48:08.5127483"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
