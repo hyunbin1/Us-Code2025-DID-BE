@@ -14,6 +14,10 @@
     {
       "name": "AI-Gemini",
       "description": "Google Gemini 기반 텍스트 생성 API"
+    },
+    {
+      "name": "Email",
+      "description": "Email 관련 API"
     }
   ],
   "paths": {
@@ -163,6 +167,82 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/mail/send": {
+      "post": {
+        "tags": ["Email"],
+        "summary": "메일 전송",
+        "description": "HTML 또는 평문 메일을 지정된 수신자에게 전송합니다.",
+        "requestBody": {
+          "description": "메일 전송 요청",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "to": {
+                    "type": "string",
+                    "description": "수신자 이메일 주소",
+                    "example": "kimgusqls1@gmail.com"
+                  },
+                  "subject": {
+                    "type": "string",
+                    "description": "메일 제목",
+                    "example": "문의 답변입니다"
+                  },
+                  "content": {
+                    "type": "string",
+                    "description": "메일 본문 (HTML 또는 텍스트)",
+                    "example": "<p>안녕하세요! 메일 잘 받았습니다.</p>"
+                  },
+                  "html": {
+                    "type": "boolean",
+                    "description": "HTML 여부 (true일 경우 HTML로 처리)",
+                    "example": true
+                  }
+                },
+                "required": ["to", "subject", "content", "html"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "메일 전송 성공",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "description": "성공 여부",
+                      "example": true
+                    },
+                    "messageId": {
+                      "type": "string",
+                      "description": "메일 메시지 ID",
+                      "example": "<2103503259.1.1751025106807@DESKTOP-92GP1I6>"
+                    },
+                    "error": {
+                      "type": "string",
+                      "description": "전송 실패 시 오류 메시지",
+                      "example": null
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "요청이 잘못된 경우"
+          },
+          "500": {
+            "description": "메일 전송 중 서버 오류 발생"
           }
         }
       }
