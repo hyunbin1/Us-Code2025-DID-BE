@@ -3,9 +3,19 @@ package nova.hackathon.util.ai.gemini;
 import java.util.List;
 
 public class GeminiDTO {
+    public record ClientNaverBlogRequestDTO(
+            String extraPrompt,
+            String contentsType,
+            String item
+    ) {
+
+    }
 
     // 클라이언트 요청용 DTO
     public record ClientRequestDTO(String question) {}
+
+
+
 
     // Gemini API 요청 포맷
     public record GeminiRequest(List<Content> contents) {
