@@ -29,6 +29,7 @@ public class MemberDTO {
     private String address; // 판매자 상세 주소
     private String phoneNumber; // 판매자 휴대번호
     private String kakaoId; // 판매자 카톡아이디
+    private String storeName; // 판매자 가게명
     private String snsId; // 판매자 SNS ID
     private String smartStoreLink; // 스마트 스토어 주소
     private Member.ContentsTone contentsTone; // 글 작성 톤
@@ -53,6 +54,7 @@ public class MemberDTO {
                 .phoneNumber(member.getPhoneNumber()) // 판매자 휴대번호
                 .kakaoId(member.getKakaoId()) // 판매자 카톡아이디
                 .snsId(member.getSnsId()) // 판매자 SNS ID
+                .storeName(member.getStoreName()) // 판매자 가게명
                 .smartStoreLink(member.getSmartStoreLink()) // 스마트 스토어 주소
                 .contentsTone(member.getContentsTone()) // 글 작성 톤
                 .build();

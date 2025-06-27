@@ -55,6 +55,8 @@ public class Member extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private ContentsTone contentsTone;
 
+    private String storeName;
+
 
     @ElementCollection(targetClass = Platform.class, fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
@@ -118,12 +120,14 @@ public class Member extends BaseEntity {
         // ── 단순 필드
         this.name           = getOrDefault(memberDTO.getName(),           this.name);
         this.email          = getOrDefault(memberDTO.getEmail(),          this.email);
-        this.contactEmail   = getOrDefault(memberDTO.getEmail(),         this.contactEmail);
+        this.contactEmail   = getOrDefault(memberDTO.getContactEmail(),         this.contactEmail);
         this.nickname       = getOrDefault(memberDTO.getNickname(),       this.nickname);
+        this.storeName       = getOrDefault(memberDTO.getStoreName(),       this.storeName);
         this.introStatus    = getOrDefault(memberDTO.getIntroStatus(),    this.introStatus);
         this.address        = getOrDefault(memberDTO.getAddress(),        this.address);
-        this.phoneNumber    = getOrDefault(memberDTO.getPhoneNumber(),    this.phoneNumber);
         this.kakaoId        = getOrDefault(memberDTO.getKakaoId(),        this.kakaoId);
+        this.phoneNumber    = getOrDefault(memberDTO.getPhoneNumber(),    this.phoneNumber);
+        this.storeName    = getOrDefault(memberDTO.getPhoneNumber(),    this.storeName);
         this.snsId          = getOrDefault(memberDTO.getSnsId(),          this.snsId);
         this.smartStoreLink = getOrDefault(memberDTO.getSmartStoreLink(), this.smartStoreLink);
 
