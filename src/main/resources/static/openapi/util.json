@@ -7,7 +7,7 @@
   },
   "servers": [
     {
-      "url": "http://mjsearch.org:8080/api/v1"
+      "url": "http://104.197.55.199:8080/api/v1"
     }
   ],
   "tags": [
