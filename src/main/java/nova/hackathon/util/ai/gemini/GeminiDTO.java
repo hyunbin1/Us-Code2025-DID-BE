@@ -1,30 +1,39 @@
 package nova.hackathon.util.ai.gemini;
 
+import nova.hackathon.member.Member;
+
 import java.util.List;
 
 public class GeminiDTO {
+
+    public record ClientNaverBlogPlanRequestDTO(
+            String contentsType, // 블로그 주제
+            String item, // 농산물 선택
+            List<String> keywords,
+            int count,
+            Member.Platform type
+    ) {}
+
+    public record BlogPlan(
+            String title,
+            String summary
+    ) {}
+
     public record ClientNaverBlogRequestDTO(
-            String extraPrompt,
-            String contentsType,
-            String item
-    ) {
+            String contentsType, // 블로그 주제
+            String item, // 농산물 선택
+            String blogTitlePrompt,
+            String blogContentsPrompt
+    ) {}
 
-    }
-
-    // 클라이언트 요청용 DTO
     public record ClientRequestDTO(String question) {}
 
-
-
-
-    // Gemini API 요청 포맷
     public record GeminiRequest(List<Content> contents) {
         public record Content(List<Part> parts) {
             public record Part(String text) {}
         }
     }
 
-    // Gemini API 응답 포맷
     public record GeminiResponse(
             List<Candidate> candidates,
             UsageMetadata usageMetadata,

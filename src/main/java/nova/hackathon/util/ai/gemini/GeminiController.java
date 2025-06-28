@@ -16,4 +16,10 @@ public class GeminiController {
         GeminiDTO.GeminiResponse response = geminiService.callGemini(request.question());
         return ApiResponse.success(response);
     }
+    @PostMapping("/image")
+    public ApiResponse<String> generateImage(@RequestBody GeminiDTO.ClientRequestDTO request) {
+        String base64Image = geminiService.generateImageFromPrompt(request.question());
+        return ApiResponse.success(base64Image); // base64 인코딩된 이미지 데이터
+    }
+
 }
