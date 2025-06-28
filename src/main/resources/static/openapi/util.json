@@ -25,7 +25,90 @@
     }
   ],
   "paths": {
-    "/naver-blog": {
+    "/plans": {
+      "post": {
+        "tags": ["Naver Blog"],
+        "summary": "블로그 글 아이디어 생성",
+        "description": "Gemini API를 활용하여 사용자의 입력을 바탕으로 블로그 제목과 요약(계획)을 생성합니다.",
+        "requestBody": {
+          "description": "블로그 계획 생성을 위한 정보",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+              },
+              "example": {
+                "contentsType": "상품 홍보",
+                "count": 4,
+                "item": "의성마늘",
+                "type": "NAVER_BLOG",
+                "keywords": ["의성", "마늘", "생산량"]
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "생성된 블로그 계획 리스트",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                  }
+                },
+                "example": [
+                  {
+                    "title": "MJS농부입니다 의성 흙내음 가득한 마늘밭을 소개합니다",
+                    "summary": "한평생 의성에서 마늘 농사만 지어온 MJS농부입니다...",
+                    "conceptTitle": "일 년의 기다림, 2024년 햇마늘 수확 현장"
+                  }
+                ]
+              }
+            }
+          },
+          "401": {
+            "description": "인증 실패"
+          },
+          "500": {
+            "description": "서버 오류"
+          }
+        }
+      },
+      "get": {
+        "tags": ["Naver Blog"],
+        "summary": "내 블로그 계획 전체 조회",
+        "description": "현재 로그인한 사용자가 생성한 모든 블로그 글 계획(제목, 요약, 상태 등)을 조회합니다.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "블로그 계획 조회 성공",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "인증 실패"
+          }
+        }
+      }
+    },
+      "/naver-blog": {
       "post": {
         "tags": ["Naver Blog"],
         "summary": "네이버 블로그 자동 작성",
@@ -154,36 +237,127 @@
         "properties": {
           "contentsType": {
             "type": "string",
-            "description": "글의 목적 - 일상생활, 상품 홍보 등 ",
-            "example": "의성마늘 판매 후기"
+            "description": "글의 목적 - 예: 일상 공유, 상품 홍보 등",
+            "example": "상품 홍보"
           },
-          "extraPrompt": {
-            "type": "string",
-            "description": "프롬프트에 포함될 추가 정보",
-            "example": "# 오늘은 벌이 매우 많더라 "
+          "count": {
+            "type": "integer",
+            "description": "생성할 블로그 글의 개수",
+            "example": 4
           },
           "item": {
             "type": "string",
-            "description": "판매 농작물 : 토마토 당근 이런거 ",
-            "example": "토마토"
+            "description": "판매 농작물 - 예: 의성마늘, 토마토 등",
+            "example": "의성마늘"
+          },
+          "type": {
+            "type": "string",
+            "description": "게시 플랫폼 타입 - 예: NAVER_BLOG, INSTAGRAM 등",
+            "example": "NAVER_BLOG"
+          },
+          "keywords": {
+            "type": "array",
+            "description": "글 생성 시 강조할 키워드 목록",
+            "items": {
+              "type": "string"
+            },
+            "example": ["의성", "마늘", "생산량"]
           }
         },
-        "required": ["contentsType", "extraPrompt"]
+        "required": ["contentsType", "count", "item", "type", "keywords"]
       },
       "GeminiResponse": {
         "type": "object",
+        "description": "Gemini 모델의 원시 응답",
         "properties": {
-          "title": {
-            "type": "string",
-            "description": "생성된 블로그 제목",
-            "example": "의성마늘, 이렇게 맛있을 수가?"
+          "candidates": {
+            "type": "array",
+            "description": "생성된 후보 결과 목록",
+            "items": {
+              "type": "object",
+              "properties": {
+                "content": {
+                  "type": "object",
+                  "properties": {
+                    "parts": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "text": {
+                            "type": "string",
+                            "description": "생성된 블로그 본문 전체 텍스트====================================================="
+                          }
+                        },
+                        "required": ["text"]
+                      }
+                    },
+                    "role": {
+                      "type": "string",
+                      "example": "model"
+                    }
+                  },
+                  "required": ["parts", "role"]
+                },
+                "finishReason": {
+                  "type": "string",
+                  "example": "STOP"
+                },
+                "avgLogprobs": {
+                  "type": ["number", "null"],
+                  "nullable": true
+                }
+              },
+              "required": ["content"]
+            }
           },
-          "content": {
+          "usageMetadata": {
+            "type": "object",
+            "properties": {
+              "promptTokenCount": {
+                "type": "integer",
+                "example": 104
+              },
+              "candidatesTokenCount": {
+                "type": "integer",
+                "example": 1353
+              },
+              "totalTokenCount": {
+                "type": "integer",
+                "example": 3421
+              },
+              "promptTokensDetails": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "modality": {
+                      "type": "string",
+                      "example": "TEXT"
+                    },
+                    "tokenCount": {
+                      "type": "integer",
+                      "example": 104
+                    }
+                  }
+                }
+              },
+              "candidatesTokensDetails": {
+                "type": ["array", "null"],
+                "nullable": true
+              }
+            }
+          },
+          "modelVersion": {
             "type": "string",
-            "description": "생성된 블로그 본문 내용",
-            "example": "경북 의성에서 직접 재배한 마늘로 만든 이야기입니다..."
+            "example": "gemini-2.5-pro"
+          },
+          "responseId": {
+            "type": "string",
+            "example": "Pm9faI26IoCMjMcP-6bogQo"
           }
-        }
+        },
+        "required": ["candidates", "usageMetadata", "modelVersion", "responseId"]
       }
     }
   }

@@ -63,6 +63,7 @@ dependencies {
 	implementation 'commons-codec:commons-codec:1.15'
 	//jsoup 의존성 추가
 	implementation 'org.jsoup:jsoup:1.16.1'
+	implementation 'com.google.cloud:google-cloud-storage:2.1.10'
 
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'org.postgresql:postgresql'
@@ -70,6 +71,7 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
 
 	//webclient
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'

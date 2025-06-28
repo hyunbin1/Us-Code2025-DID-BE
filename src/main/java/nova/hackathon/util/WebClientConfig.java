@@ -7,14 +7,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Configuration
 public class WebClientConfig {
 
-    @Bean(name = "openWeatherMapClient")
-    public WebClient openWeatherMapClient(WebClient.Builder builder) {
-        return builder
-                .baseUrl("https://api.openweathermap.org")
-                .defaultHeader("Content-Type", "application/json")
-                .build();
-    }
-
     @Bean(name = "geminiClient")
     public WebClient geminiClient(WebClient.Builder builder) {
         return builder
