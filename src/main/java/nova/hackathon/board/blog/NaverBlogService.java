@@ -140,7 +140,7 @@ public class NaverBlogService {
 
 
 
-    public GeminiDTO.GeminiResponse writeNaverBlog(GeminiDTO.ClientNaverBlogRequestDTO req, UserPrincipal userPrincipal) {
+    public String writeNaverBlog(GeminiDTO.ClientNaverBlogRequestDTO req, UserPrincipal userPrincipal) {
 
         Member member = memberRepository.findByEmail(userPrincipal.getEmail()).orElseThrow();
         String storeName = member.getStoreName();
@@ -188,7 +188,16 @@ public class NaverBlogService {
         log.info("최종 Gemini 프롬프트:\n{}", finalPrompt);
 
         GeminiDTO.GeminiResponse firstDraft = geminiService.callGemini(finalPrompt);  // 원본 생성
-        return firstDraft;
+        // 여러 후보·파트가 있을 수 있으므로 안전하게 꺼내기
+        String resultText = firstDraft.candidates().stream()
+                .findFirst()                               // 첫 번째 후보
+                .flatMap(c -> c.content().parts().stream() // 후보의 첫 번째 part
+                        .findFirst()
+                        .map(GeminiDTO.GeminiResponse
+                                .Candidate.Content.Part::text))
+                .orElse("");                               // 못 찾을 경우 빈 문자열
+
+        return resultText;
     }
 
     // 전체 조회

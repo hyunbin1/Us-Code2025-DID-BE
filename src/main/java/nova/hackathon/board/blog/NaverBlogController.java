@@ -5,6 +5,7 @@ import nova.hackathon.board.dto.BoardDTO;
 import nova.hackathon.util.ai.gemini.GeminiDTO;
 import nova.hackathon.util.response.ApiResponse;
 import nova.hackathon.util.security.UserPrincipal;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -39,11 +40,14 @@ public class NaverBlogController {
     }
 
     @PostMapping()
-    public GeminiDTO.GeminiResponse writeNaverBlog(
+    public ResponseEntity<?> writeNaverBlog(
             @RequestBody GeminiDTO.ClientNaverBlogRequestDTO request,
             @AuthenticationPrincipal UserPrincipal userPrincipal
     ) {
-        return naverBlogService.writeNaverBlog(request, userPrincipal);
+        String result = naverBlogService.writeNaverBlog(request, userPrincipal);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(ApiResponse.success(result));
     }
 
     @PostMapping("/plans/save")
