@@ -59,9 +59,8 @@ public class NaverBlogService {
         promptBuilder.append(
                 "\n---\n" +
                         "해당 서비스는 네이버 인기 농가 블로그의 한달 게시 목록을 뽑아주는 스케줄러입니다."
-                        + "위 정보에 따라 네이버 블로그용 아이디어를 ").append(req.count()).append("개 제안해주세요.\n" +
-                "각 아이디어는 아래 형식으로 구성해 주세요(conceptTitle은 맨 처음에 무조건 한번만 나옵니다.):\n" +
-                "conceptTitle: ...\n" +
+                        + "위 정보에 따라 네이버 블로그용 아이디어를 ").append(req.count()).append("개 제안해주세요.\n" + "각 아이디어는 아래 형식으로 구성해 주세요(contentsTitle은 맨 처음에 무조건 한번만 나옵니다.):\n" +
+                "contentsTitle: ...\n" +
 
                 "제목: ...\n" +
                 "요약: ...\n\n" +
@@ -79,12 +78,12 @@ public class NaverBlogService {
                 .text();
         log.info("[Gemini 응답 원문]\n{}", rawResponse);
 
-        // conceptTitle 추출
-        String conceptTitle = "Untitled";
-        Matcher conceptMatcher = Pattern.compile("conceptTitle\\s*:\\s*(.+)", Pattern.CASE_INSENSITIVE)
+        // contentsTitle 추출
+        String contentsTitle = "Untitled";
+        Matcher conceptMatcher = Pattern.compile("contentsTitle\\s*:\\s*(.+)", Pattern.CASE_INSENSITIVE)
                 .matcher(rawResponse);
         if (conceptMatcher.find()) {
-            conceptTitle = conceptMatcher.group(1).trim();
+            contentsTitle = conceptMatcher.group(1).trim();
         }
 
         // 제목/요약 파싱만 수행 (저장 X)
@@ -102,7 +101,7 @@ public class NaverBlogService {
             cnt++;
         }
 
-        return new GeminiDTO.BlogPlanResponse(conceptTitle, plans); // 저장은 하지 않음
+        return new GeminiDTO.BlogPlanResponse(contentsTitle, plans); // 저장은 하지 않음
     }
 
     @Transactional
@@ -124,7 +123,7 @@ public class NaverBlogService {
                         .status(Board.Status.PENDING)
                         .type(req.type())
                         .ver(newVer)
-                        .conceptTitle(req.conceptTitle())
+                        .contentsTitle(req.contentsTitle())
                         .item(req.item())
                         .contentsType(req.contentsType())
                         .keywords(req.keywords())
@@ -201,7 +200,7 @@ public class NaverBlogService {
                         .contentsType(board.getContentsType())
                         .title(board.getTitle())
                         .summary(board.getSummary())
-                        .conceptTitle(board.getConceptTitle())
+                        .contentsTitle(board.getContentsTitle())
                         .status(board.getStatus().name())
                         .ver(board.getVer())
                         .build())

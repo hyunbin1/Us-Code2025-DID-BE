@@ -32,7 +32,7 @@ public class Board {
     private String content; // 본문은 나중에 추가됨
 
     private int ver;
-    private String conceptTitle;
+    private String contentsTitle;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

@@ -10,7 +10,7 @@ public class BoardDTO {
     private String contentsType;
     private String title;
     private String summary;
-    private String conceptTitle;
+    private String contentsTitle;
     private String status;
     private int ver;
 }
