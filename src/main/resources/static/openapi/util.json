@@ -256,8 +256,9 @@
               },
               "example": {
                 "contentsType": "상품 홍보",
-                "extraPrompt": "의성 마늘이 건강에 그렇게 좋대",
-                "item" : "의성마늘"
+                "item" : "의성마늘",
+                "blogTitlePrompt": "블로그 글 제목",
+                "blogContentsPrompt": "블로그 요약문 프롬포트"
               }
             }
           }
@@ -417,7 +418,7 @@
             "type": "string",
             "description": "게시 플랫폼 타입 - 예: NAVER_BLOG, INSTAGRAM 등",
             "example": "NAVER_BLOG"
-          },
+          }
         },
         "required": ["contentsType", "item", "extraPrompt"]
       },
