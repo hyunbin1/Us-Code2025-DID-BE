@@ -12,6 +12,9 @@ public class WebClientConfig {
         return builder
                 .baseUrl("https://generativelanguage.googleapis.com")
                 .defaultHeader("Content-Type", "application/json")
+                .codecs(configurer -> configurer
+                        .defaultCodecs()
+                        .maxInMemorySize(10 * 1024 * 1024 * 10))  // 10MB
                 .build();
     }
 
@@ -21,7 +24,9 @@ public class WebClientConfig {
                 .baseUrl("https://generativelanguage.googleapis.com")
                 .defaultHeader("Content-Type", "application/json")
                 .defaultHeader("Accept", "application/json")
+                .codecs(configurer -> configurer
+                        .defaultCodecs()
+                        .maxInMemorySize(10 * 1024 * 1024 * 10))  // 10MB
                 .build();
     }
-
 }
