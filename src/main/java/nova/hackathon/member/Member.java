@@ -42,7 +42,7 @@ public class Member extends BaseEntity {
     private Gender gender;
 
     private String nickname;
-    private LocalDateTime AlarmTime;
+    private LocalDateTime alarmTime;
 
     private Boolean introStatus; // 처음 프로필 설정 여부
 
