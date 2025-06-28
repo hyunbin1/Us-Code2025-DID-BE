@@ -149,7 +149,7 @@ public class NaverBlogService {
 
         StringBuilder promptBuilder = new StringBuilder();
 
-        promptBuilder.append("# 주제: 네이버 블로그의 인기 농가 블로그를 작성하고 싶은데, 인기 블로그들의 형식에 따라서 글을 a4 2장 분량으로 작성하고 싶어.\n")
+        promptBuilder.append("# 주제: 네이버 블로그의 인기 농가 블로그를 작성하고 싶은데, 인기 블로그들의 형식에 따라서 글을 a4 1장~1장 반 분량으로 작성하고 싶어.\n")
                 .append("# 역할: 의성 농부\n")
                 .append("줄바꿈 문자나 `<br>`, `<br/>` 같은 HTML 태그는 **출력에 포함하지 마**.");
 

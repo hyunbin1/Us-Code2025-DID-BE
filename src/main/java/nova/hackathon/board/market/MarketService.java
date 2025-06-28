@@ -146,7 +146,7 @@ public class MarketService {
         StringBuilder promptBuilder = new StringBuilder();
 
         promptBuilder.append("# 주제: 네이버 스마트스토어의 판매량 1위하는 매우 유명한 농가 상품 상세페이지를 작성하고 싶은데, 인기 스토어들의 " +
-                        "레이아웃과 문체를 참고해서 A4 2장 분량으로 만들고 싶어.\n")
+                        "레이아웃과 문체를 참고해서 A4 1장~1장 반 분량으로 만들고 싶어.\n")
                 .append("# 역할: 직접 수확하고 재배한 것을 판매하는 스마트스토어 판매자\n")
                 .append("줄바꿈 문자나 `<br>`, `<br/>` 같은 HTML 태그는 **출력에 포함하지 마**.");
 
