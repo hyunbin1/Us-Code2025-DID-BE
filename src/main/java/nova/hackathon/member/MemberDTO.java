@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -25,6 +26,7 @@ public class MemberDTO {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private List<Member.Platform> platform;
+    private LocalTime alarmTime;
     private Member.Role role;
     private String address; // 판매자 상세 주소
     private String phoneNumber; // 판매자 휴대번호
@@ -33,6 +35,7 @@ public class MemberDTO {
     private String snsId; // 판매자 SNS ID
     private String smartStoreLink; // 스마트 스토어 주소
     private Member.ContentsTone contentsTone; // 글 작성 톤
+    private Member.AlarmFrequency alarmFrequency; // 글 작성 톤
 
     /**
      * Member 엔티티를 MemberDTO로 변환하는 메서드 (응답용)
@@ -48,6 +51,7 @@ public class MemberDTO {
                 .createdAt(member.getCreatedAt())
                 .updatedAt(member.getUpdatedAt())
                 .role(member.getRole())
+                .alarmTime(member.getAlarmTime())
                 .platform(member.getPlatform())
                 .introStatus(member.getIntroStatus())
                 .address(member.getAddress()) // 판매자 상세 주소
@@ -57,6 +61,7 @@ public class MemberDTO {
                 .storeName(member.getStoreName()) // 판매자 가게명
                 .smartStoreLink(member.getSmartStoreLink()) // 스마트 스토어 주소
                 .contentsTone(member.getContentsTone()) // 글 작성 톤
+                .alarmFrequency(member.getAlarmFrequency())
                 .build();
     }
 

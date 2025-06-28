@@ -34,7 +34,6 @@ public class Member extends BaseEntity {
     @Column(nullable = false, unique = true)
     private String email;
 
-
     @Column(nullable = false)
     private String password;
 
@@ -44,6 +43,9 @@ public class Member extends BaseEntity {
     private String nickname;
     private LocalTime alarmTime;
 
+    @Enumerated(EnumType.STRING)
+    private AlarmFrequency alarmFrequency;
+
     private Boolean introStatus; // 처음 프로필 설정 여부
 
     private String contactEmail; // 컨텍용 이매일
@@ -52,10 +54,8 @@ public class Member extends BaseEntity {
     private String kakaoId; // 판매자 카톡아이디
     private String snsId; // 판매자 SNS ID
     private String smartStoreLink; // 스마트 스토어 주소\
-
     @Enumerated(EnumType.STRING)
     private ContentsTone contentsTone;
-
     private String storeName;
 
 
@@ -76,6 +76,16 @@ public class Member extends BaseEntity {
         }
     }
 
+    public enum AlarmFrequency {
+        ONCE, TWICE, THIRD;
+        public static AlarmFrequency fromString(String value) {
+            try {
+                return AlarmFrequency.valueOf(value.toUpperCase());
+            } catch (IllegalArgumentException | NullPointerException e) {
+                throw new IllegalArgumentException("Invalid AlarmFrequency value: " + value);
+            }
+        }
+    }
     public enum Platform {
         NAVER_BLOG, INSTAGRAM, NAVER_STORE, CARROT;
         public static Platform fromString(String value) {
@@ -140,16 +150,18 @@ public class Member extends BaseEntity {
         this.address        = getOrDefault(memberDTO.getAddress(),        this.address);
         this.kakaoId        = getOrDefault(memberDTO.getKakaoId(),        this.kakaoId);
         this.phoneNumber    = getOrDefault(memberDTO.getPhoneNumber(),    this.phoneNumber);
-        this.storeName    = getOrDefault(memberDTO.getStoreName(),    this.storeName);
+        this.storeName    = getOrDefault(memberDTO.getStoreName(),        this.storeName);
         this.snsId          = getOrDefault(memberDTO.getSnsId(),          this.snsId);
         this.smartStoreLink = getOrDefault(memberDTO.getSmartStoreLink(), this.smartStoreLink);
-
-        // ── Enum 필드
+        this.alarmTime      = getOrDefault(memberDTO.getAlarmTime(),      this.alarmTime);        // ── Enum 필드
         if (memberDTO.getGender() != null) {
             this.gender = Gender.fromString(memberDTO.getGender());
         }
         if (memberDTO.getContentsTone() != null) {
             this.contentsTone = ContentsTone.fromString(String.valueOf(memberDTO.getContentsTone()));
+        }
+        if (memberDTO.getAlarmFrequency() != null) {
+            this.contentsTone = ContentsTone.fromString(String.valueOf(memberDTO.getAlarmFrequency()));
         }
 
         // ── 컬렉션 필드 (플랫폼)

@@ -29,8 +29,8 @@ public class NaverBlogService {
      * 블로그 계획(Plan)을 Gemini로부터 생성하고, Board 엔티티에 저장한다.
      */
     @Transactional
-    public List<GeminiDTO.BlogPlan> generateBlogPlanList(
-            GeminiDTO.ClientNaverBlogPlanRequestDTO req, UserPrincipal userPrincipal) {
+    public GeminiDTO.BlogPlanResponse generateBlogPlanList(
+    GeminiDTO.ClientNaverBlogPlanRequestDTO req, UserPrincipal userPrincipal) {
 
         Member member = memberRepository.findByEmail(userPrincipal.getEmail()).orElseThrow();
 
@@ -60,7 +60,7 @@ public class NaverBlogService {
                 "\n---\n" +
                         "해당 서비스는 네이버 인기 농가 블로그의 한달 게시 목록을 뽑아주는 스케줄러입니다."
                         + "위 정보에 따라 네이버 블로그용 아이디어를 ").append(req.count()).append("개 제안해주세요.\n" +
-                "각 아이디어는 아래 형식으로 구성해 주세요:\n" +
+                "각 아이디어는 아래 형식으로 구성해 주세요(conceptTitle은 맨 처음에 무조건 한번만 나옵니다.):\n" +
                 "conceptTitle: ...\n" +
 
                 "제목: ...\n" +
@@ -77,12 +77,9 @@ public class NaverBlogService {
                 .candidates().get(0)
                 .content().parts().get(0)
                 .text();
+        log.info("[Gemini 응답 원문]\n{}", rawResponse);
 
-// ----------------------- 파싱 + 저장 -----------------------
-        List<GeminiDTO.BlogPlan> plans = new ArrayList<>();
-        List<Board> boards = new ArrayList<>();
-
-// (1) conceptTitle 은 1개만
+        // conceptTitle 추출
         String conceptTitle = "Untitled";
         Matcher conceptMatcher = Pattern.compile("conceptTitle\\s*:\\s*(.+)", Pattern.CASE_INSENSITIVE)
                 .matcher(rawResponse);
@@ -90,43 +87,55 @@ public class NaverBlogService {
             conceptTitle = conceptMatcher.group(1).trim();
         }
 
-// (2) 제목/요약 N개 파싱
+        // 제목/요약 파싱만 수행 (저장 X)
         Pattern ideaPtn = Pattern.compile(
                 "제목\\s*:\\s*(.*?)\\s*요약\\s*:\\s*(.*?)(?=(\\n제목|$))",
                 Pattern.DOTALL | Pattern.CASE_INSENSITIVE);
         Matcher ideaMatcher = ideaPtn.matcher(rawResponse);
 
+        List<GeminiDTO.BlogPlan> plans = new ArrayList<>();
         int cnt = 0;
         while (ideaMatcher.find() && cnt < req.count()) {
             String title = ideaMatcher.group(1).trim();
             String summary = ideaMatcher.group(2).trim();
-
-            // DTO 리스트
             plans.add(new GeminiDTO.BlogPlan(title, summary));
-
-            // (3) Board 엔티티 생성
-            boards.add(
-                    Board.builder()
-                            .member(member)
-                            .title(title)
-                            .summary(summary)
-                            .content(null)                     // 본문은 이후 생성
-                            .status(Board.Status.PENDING)
-                            .type(req.type())
-                            .ver(newVer)
-                            .conceptTitle(conceptTitle)        // ★ 공통 폴더명
-                            .item(req.item())
-                            .contentsType(req.contentsType())
-                            .keywords(req.keywords() != null ? req.keywords() : List.of())
-                            .build()
-            );
             cnt++;
         }
 
-// 한 번에 INSERT
-        boardRepository.saveAll(boards);
-        return plans;
+        return new GeminiDTO.BlogPlanResponse(conceptTitle, plans); // 저장은 하지 않음
     }
+
+    @Transactional
+    public void saveBlogPlanList(GeminiDTO.SaveRequestDTO req, UserPrincipal userPrincipal) {
+        Member member = memberRepository.findByEmail(userPrincipal.getEmail()).orElseThrow();
+
+        int latestVer = boardRepository.findMaxVersionByMemberAndType(member, req.type()).orElse(0);
+        int newVer = latestVer + 1;
+        if (newVer >= 4) {
+            throw new IllegalStateException("버전이 4 이상이므로 더 이상 저장할 수 없습니다.");
+        }
+
+        List<Board> boards = req.plans().stream()
+                .map(plan -> Board.builder()
+                        .member(member)
+                        .title(plan.title())
+                        .summary(plan.summary())
+                        .content(null)
+                        .status(Board.Status.PENDING)
+                        .type(req.type())
+                        .ver(newVer)
+                        .conceptTitle(req.conceptTitle())
+                        .item(req.item())
+                        .contentsType(req.contentsType())
+                        .keywords(req.keywords())
+                        .build()
+                )
+                .toList();
+
+        boardRepository.saveAll(boards);
+    }
+
+
 
 
     public GeminiDTO.GeminiResponse writeNaverBlog(GeminiDTO.ClientNaverBlogRequestDTO req, UserPrincipal userPrincipal) {
