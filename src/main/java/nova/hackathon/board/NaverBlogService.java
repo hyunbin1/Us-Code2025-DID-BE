@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -127,9 +128,9 @@ public class NaverBlogService {
                         .item(req.item())
                         .contentsType(req.contentsType())
                         .keywords(req.keywords())
-                        .build()
-                )
-                .toList();
+                        .build())
+                .collect(Collectors.toList());
+
 
         boardRepository.saveAll(boards);
     }
