@@ -49,10 +49,10 @@ public class Board {
     private String contentsType; // 상품홍보, 일상공유 등
 
     @ElementCollection
+    @Builder.Default
     @CollectionTable(name = "board_keywords", joinColumns = @JoinColumn(name = "board_id"))
     @Column(name = "keyword")
     private List<String> keywords = new ArrayList<>();
-
 
     public enum Status {
         PENDING,     // 요약까지 생성된 상태

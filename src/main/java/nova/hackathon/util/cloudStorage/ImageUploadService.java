@@ -1,5 +1,6 @@
 package nova.hackathon.util.cloudStorage;
 
+import com.google.cloud.storage.Acl;
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +34,8 @@ public class ImageUploadService {
                         .build();
 
                 storage.create(blobInfo, file.getBytes());
+                Acl acl = Acl.of(Acl.User.ofAllUsers(), Acl.Role.READER);
+                storage.createAcl(blobInfo.getBlobId(), acl);
 
                 String publicUrl = String.format("https://storage.googleapis.com/%s/%s", BUCKET_NAME, objectName);
                 uploadedUrls.add(publicUrl);

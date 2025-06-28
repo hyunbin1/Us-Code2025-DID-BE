@@ -58,7 +58,7 @@ public class GeminiDTO {
     }
 
     public record SaveRequestDTO(
-            String conceptTitle,
+            String contentsTitle,
             String item,
             String contentsType,
             List<String> keywords,
@@ -67,7 +67,7 @@ public class GeminiDTO {
     ) {}
 
     public record BlogPlanResponse(
-            String contentTitle,
+            String contentsTitle,
             List<GeminiDTO.BlogPlan> plans
     ) {}
 
