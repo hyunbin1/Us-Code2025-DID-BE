@@ -54,6 +54,12 @@ public class Board {
     @Column(name = "keyword")
     private List<String> keywords = new ArrayList<>();
 
+    @ElementCollection
+    @Builder.Default
+    @CollectionTable(name = "board_images", joinColumns = @JoinColumn(name = "board_id"))
+    @Column(name = "image_url")
+    private List<String> images = new ArrayList<>();
+
     public enum Status {
         PENDING,     // 요약까지 생성된 상태
         GENERATED    // 본문까지 생성된 상태
@@ -64,4 +70,8 @@ public class Board {
         this.status = Status.GENERATED;
     }
 
+    public void updateImages(List<String> newImages) {
+        this.images.clear();
+        this.images.addAll(newImages);
+    }
 }

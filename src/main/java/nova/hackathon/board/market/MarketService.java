@@ -1,4 +1,4 @@
-package nova.hackathon.board.blog;
+package nova.hackathon.board.market;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 @Transactional(readOnly = true)
-public class NaverBlogService {
+public class MarketService {
     private final GeminiService geminiService;
     private final MemberRepository memberRepository;
     private final BoardRepository boardRepository;
@@ -47,7 +47,7 @@ public class NaverBlogService {
 
         // 공통 프롬프트 설정
         StringBuilder promptBuilder = new StringBuilder();
-        promptBuilder.append("# 역할: 농부\n");
+        promptBuilder.append("# 역할: 네이버 스마트 스토어에 정통한 농부\n");
         promptBuilder.append("# 조건: ** ** 혹은 \\n 등 특수문자는 사용하지 않는다.");
         if (name != null) promptBuilder.append("# 농부의 이름: ").append(name).append("\n");
         if (storeName != null) promptBuilder.append("# 판매 가게 명: ").append(storeName).append("\n");
@@ -137,20 +137,17 @@ public class NaverBlogService {
         boardRepository.saveAll(boards);
     }
 
-
-
-
     public GeminiDTO.GeminiResponse writeNaverBlog(GeminiDTO.ClientNaverBlogRequestDTO req, UserPrincipal userPrincipal) {
 
         Member member = memberRepository.findByEmail(userPrincipal.getEmail()).orElseThrow();
         String storeName = member.getStoreName();
         String name = member.getName();
         Member.ContentsTone contentsTone = member.getContentsTone();
-
         StringBuilder promptBuilder = new StringBuilder();
 
-        promptBuilder.append("# 주제: 네이버 블로그의 인기 농가 블로그를 작성하고 싶은데, 인기 블로그들의 형식에 따라서 글을 a4 2장 분량으로 작성하고 싶어.\n")
-                .append("# 역할: 의성 농부\n")
+        promptBuilder.append("# 주제: 네이버 스마트스토어의 판매량 1위하는 매우 유명한 농가 상품 상세페이지를 작성하고 싶은데, 인기 스토어들의 " +
+                        "레이아웃과 문체를 참고해서 A4 2장 분량으로 만들고 싶어.\n")
+                .append("# 역할: 직접 수확하고 재배한 것을 판매하는 스마트스토어 판매자\n")
                 .append("줄바꿈 문자나 `<br>`, `<br/>` 같은 HTML 태그는 **출력에 포함하지 마**.");
 
         if (name != null) {
@@ -202,7 +199,6 @@ public class NaverBlogService {
                 .map(board -> BoardDTO.builder()
                         .contentsType(board.getContentsType())
                         .title(board.getTitle())
-                        .item(board.getItem())
                         .summary(board.getSummary())
                         .contentsTitle(board.getContentsTitle())
                         .status(board.getStatus().name())

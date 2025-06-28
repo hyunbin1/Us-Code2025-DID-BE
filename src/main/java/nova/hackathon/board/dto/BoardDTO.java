@@ -12,5 +12,6 @@ public class BoardDTO {
     private String summary;
     private String contentsTitle;
     private String status;
+    private String item;
     private int ver;
 }
