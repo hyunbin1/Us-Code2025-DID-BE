@@ -56,4 +56,19 @@ public class GeminiDTO {
             public record TokenDetail(String modality, int tokenCount) {}
         }
     }
+
+    public record SaveRequestDTO(
+            String conceptTitle,
+            String item,
+            String contentsType,
+            List<String> keywords,
+            Member.Platform type,
+            List<GeminiDTO.BlogPlan> plans
+    ) {}
+
+    public record BlogPlanResponse(
+            String contentTitle,
+            List<GeminiDTO.BlogPlan> plans
+    ) {}
+
 }

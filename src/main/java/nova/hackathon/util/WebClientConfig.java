@@ -14,4 +14,14 @@ public class WebClientConfig {
                 .defaultHeader("Content-Type", "application/json")
                 .build();
     }
+
+    @Bean(name = "geminiImageClient")
+    public WebClient geminiImageClient(WebClient.Builder builder) {
+        return builder
+                .baseUrl("https://generativelanguage.googleapis.com")
+                .defaultHeader("Content-Type", "application/json")
+                .defaultHeader("Accept", "application/json")
+                .build();
+    }
+
 }
