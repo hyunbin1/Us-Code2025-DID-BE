@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import nova.hackathon.util.entity.BaseEntity;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -41,6 +42,7 @@ public class Member extends BaseEntity {
     private Gender gender;
 
     private String nickname;
+    private LocalDateTime AlarmTime;
 
     private Boolean introStatus; // 처음 프로필 설정 여부
 
