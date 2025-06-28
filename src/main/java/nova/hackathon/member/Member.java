@@ -161,7 +161,7 @@ public class Member extends BaseEntity {
             this.contentsTone = ContentsTone.fromString(String.valueOf(memberDTO.getContentsTone()));
         }
         if (memberDTO.getAlarmFrequency() != null) {
-            this.contentsTone = ContentsTone.fromString(String.valueOf(memberDTO.getAlarmFrequency()));
+            this.alarmFrequency = AlarmFrequency.fromString(String.valueOf(memberDTO.getAlarmFrequency()));
         }
 
         // ── 컬렉션 필드 (플랫폼)

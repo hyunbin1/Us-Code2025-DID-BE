@@ -1,4 +1,4 @@
-package nova.hackathon.board;
+package nova.hackathon.board.blog;
 
 import lombok.RequiredArgsConstructor;
 import nova.hackathon.board.dto.BoardDTO;

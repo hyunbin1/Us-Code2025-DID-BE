@@ -1,7 +1,9 @@
-package nova.hackathon.board;
+package nova.hackathon.board.blog;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import nova.hackathon.board.Board;
+import nova.hackathon.board.BoardRepository;
 import nova.hackathon.board.dto.BoardDTO;
 import nova.hackathon.member.Member;
 import nova.hackathon.member.MemberRepository;
