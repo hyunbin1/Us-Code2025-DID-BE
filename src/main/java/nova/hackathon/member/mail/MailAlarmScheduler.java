@@ -9,7 +9,6 @@ import nova.hackathon.util.mail.MailService;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -25,8 +24,7 @@ public class MailAlarmScheduler {
     @Scheduled(cron = "0 * * * * *") // 예시: 매분마다 실행
     public void sendScheduledEmails() {
         // 현재 시간 (시:분 기준으로 비교)
-        LocalDateTime now = LocalDateTime.parse(LocalTime.now().withSecond(0).withNano(0).toString());
-
+        LocalTime now = LocalTime.parse(LocalTime.now().withSecond(0).withNano(0).toString());
         // time 필드가 now와 일치하는 사용자에게 알림 전송
         List<Member> targetMembers = memberRepository.findByAlarmTime(now);
         for (Member member : targetMembers) {
